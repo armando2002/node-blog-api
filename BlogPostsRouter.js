@@ -6,12 +6,18 @@ const jsonParser = bodyParser.json();
 
 const {BlogPosts} = require('./models');
 
-app.get('/blog-posts', (req, res) => {
+// add some blog posts
+// title, content, author
+BlogPosts.create('Favorite Cat Food', 'My favorite cat food is raw salmon!', "Kuroi");
+BlogPosts.create('Favorite Cat Toy', 'My favorite cat toy is the laser pointer!', "Kuroi");
+
+
+router.get('/', (req, res) => {
     res.json(BlogPosts.get());
   });
 
 // initial .post
-app.post('/', jsonParser, (req, res) => {
+router.post('/', jsonParser, (req, res) => {
     // ensure `title` 'content' and `author` are in request body
     const requiredFields = ['title', 'content', 'author'];
     for (let i=0; i<requiredFields.length; i++) {
@@ -28,14 +34,14 @@ app.post('/', jsonParser, (req, res) => {
   });
 
   // initial delete
-  app.delete('/:id', (req, res) => {
+  router.delete('/:id', (req, res) => {
     BlogPosts.delete(req.params.id);
     console.log(`Deleted blog post \`${req.params.id}\``);
     res.status(204).end();
   });
 
   // initial .put
-  app.put('/:id', jsonParser, (req, res) => {
+  router.put('/:id', jsonParser, (req, res) => {
     const requiredFields = ['title', 'content', 'author', 'id'];
     for (let i=0; i<requiredFields.length; i++) {
         const field = requiredFields[i];
