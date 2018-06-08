@@ -62,36 +62,44 @@ describe('Blog Posts', function() {
     });
 
     // it should do something on PUT
+    // the ID seems to change randomly, I need to request the ID first before updating
     it('should update a blog post on PUT', function() {
-        const updatePost = {
-            id: "9c9b77bf-39a9-44f1-b5ad-22c79aa1b8a8",
-            title: "New Favorite Cat Food",
-            content: "My new favorite cat food is tuna!",
-            author: "Kuroi"
-        }
-
-        const expectedKeys = ['publishDate'].concat(Object.keys(updatePost));
-
+        // ask for items first
         return chai.request(app)
-            console.log(updatePost.id);
+            .get('/blog-posts')
+            .then(function (res) {
+                const updatePost = {
+                    id: res.body[0].id,
+                    title: "New Favorite Cat Food updated",
+                    content: "My new favorite cat food is tuna!",
+                    author: "Kuroi"
+                }
+            });
+
+
+       // const expectedKeys = ['publishDate'].concat(Object.keys(updatePost));
+        return chai.request(app)
             .put(`/blog-posts/${updatePost.id}`)
             .send(updatePost)
             .then(function(res) {
                 expect(res).to.have.status(204);
-                expect(res).to.be.json;
-                expect(res.body).to.be.a('object');
-                expect(resp.body).tp.have.all.keys(expectedKeys);
-                expect(res.body.id).to.equal(updatePost.id);
-                expect(res.body.title).to.equal(updatePost.title);
-                expect(res.body.content).to.equal(updatePost.content);
-                expect(res.body.author).to.equal(updatePost.author);
-
             });
 
     });
     // it should do something on DELETE
+    it('should delete a blog post on delete', function() {
+        return chai.request(app)
+        // get the blog posts
+        .get('/blog-posts')
+        // then delete the first blog post found
+        .then(function(res) {
+            return chai.request(app)
+            .delete(`/blog-posts/${res.body[0].id}`)
+            .then(function (res) {
+                expect(res).to.have.status(204);
+            });
+        });
 
-
-
+    });
 
 });
