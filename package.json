@@ -1,0 +1,40 @@
+{
+  "name": "node-blog-api",
+  "version": "1.0.0",
+  "description": "<h1>Thinkful Node.js & Express Blog API Challenge</h1>",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "array-flatten": "^2.1.1",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "debug": "^3.1.0",
+    "diff": "^3.5.0",
+    "glob": "^7.1.2",
+    "he": "^1.1.1",
+    "iconv-lite": "^0.4.23",
+    "inherits": "^2.0.3",
+    "ipaddr.js": "^1.7.0",
+    "mime": "^2.3.1",
+    "minimatch": "^3.0.4",
+    "mocha": "^5.2.0",
+    "qs": "^6.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armando2002/node-blog-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/armando2002/node-blog-api/issues"
+  },
+  "homepage": "https://github.com/armando2002/node-blog-api#readme"
+}
