@@ -83,9 +83,9 @@ app.delete('/blog-posts/:id', (req,res) => {
 
 // PUT
 app.put('/blog-posts/:id', (req,res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+  if (!(req.params.id === req.body.id)) {
     res.status(400).json({
-      error: 'ID entered does not match an existing ID in DB'
+      error: 'ID in URL and Body do not match'
     });
   }
 
