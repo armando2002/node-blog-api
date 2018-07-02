@@ -82,6 +82,25 @@ app.delete('/blog-posts/:id', (req,res) => {
 });
 
 // PUT
+app.put('/blog-posts/:id', (req,res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    res.status(400).json({
+      error: 'ID entered does not match an existing ID in DB'
+    });
+  }
+
+  const updateBlogPost = {};
+  const updateFields = ['title', 'content', 'author'];
+  updateFields.forEach(field => {
+    if (field in req.body) {
+      updateBlogPost[field] = req.body[field];
+    }
+  });
+
+  BlogPost.findByIdAndUpdate(req.params.id, { $set: updateBlogPost }, {new: true })
+  .then(updateBlogPost => res.status(204).end())
+  .catch(err => res.status(500).json({ message: 'internal server error'}));
+});
 
 
 // server connections
@@ -120,6 +139,7 @@ function closeServer() {
   });
 });
 }
+
 // if server.js is called directly, run this block
 if (require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
