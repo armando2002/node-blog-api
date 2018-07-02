@@ -27,6 +27,7 @@ blogPostSchema.methods.serialize = function() {
   };
 };
 
+// how to do I specify an existing collection? Mongoose created a new 'blogposts' collection rather than use the 'blogdata' collection that I imported into
 // create BlogPost model
 const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 
