@@ -107,9 +107,10 @@ app.put('/blog-posts/:id', (req,res) => {
 let server;
 
 // run server
-function runServer(databaseURL, port = PORT) {
+function runServer(DATABASE_URL, port = PORT) {
+  console.log(DATABASE_URL);
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseURL, err => {
+    mongoose.connect(DATABASE_URL, err => {
       if (err) {
         return reject(err);
       }
