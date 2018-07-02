@@ -18,7 +18,7 @@ app.use(express.json());
 // main API calls (GET, POST, DELETE, PUT )
 
 // GET ALL
-app.get('/posts', (req,res) => {
+app.get('/blog-posts', (req,res) => {
   BlogPost.find().then(posts => {
     res.json(posts.map(post => post.serialize()));
   })
@@ -29,7 +29,7 @@ app.get('/posts', (req,res) => {
 });
 
 // GET BY ID
-app.get('/posts/:id', (req,res) => {
+app.get('/blog-posts/:id', (req,res) => {
   BlogPost.findById(req.params.id).then(post => res.json(post.serialize()))
   .catch(err => {
     console.error(err);
@@ -38,6 +38,34 @@ app.get('/posts/:id', (req,res) => {
 });
 
 // POST
+
+// check for required fields
+app.post('/blog-posts', (req,res) => {
+  const requiredFields = ['title', 'content', 'author'];
+  for (let i=0; i < requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `${field} missing in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+  
+  // create blog post
+
+  // for some reason, author is coming across as 'undefined undefined' in POSTMAN unless I submit "firstName", "lastName"
+  BlogPost.create({
+    title: req.body.title,
+    content: req.body.content,
+    author: req.body.author
+  })
+  .then(blogPost => res.status(201).json(blogPost.serialize()))
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({error: 'internal server error'});
+  });
+  
+});
 
 // DELETE
 
