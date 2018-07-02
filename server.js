@@ -69,6 +69,18 @@ app.post('/blog-posts', (req,res) => {
 
 // DELETE
 
+// Queston for Krishna, how do I get my delete message to show up in Postman? All I see is the 204
+
+app.delete('/blog-posts/:id', (req,res) => {
+  BlogPost.findByIdAndRemove(req.params.id)
+  .then(() => {
+    res.status(204).json({message: `deleted ${req.params.id}`});
+  })
+  .catch(err => {
+    res.status(500).json({ error: 'internal server error'});
+  });
+});
+
 // PUT
 
 
