@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
   });
 
 // initial .post
+// this next line will not be needed with refactor
 router.post('/', jsonParser, (req, res) => {
     // ensure `title` 'content' and `author` are in request body
     const requiredFields = ['title', 'content', 'author'];
@@ -28,7 +29,8 @@ router.post('/', jsonParser, (req, res) => {
         return res.status(400).send(message);
       }
     }
-  
+    // this will change with refactor to the mongoose model
+    // replace BlogPosts with mongoose model
     const item = BlogPosts.create(req.body.title, req.body.content, req.body.author);
     res.status(201).json(item);
   });
