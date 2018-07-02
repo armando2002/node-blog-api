@@ -47,34 +47,42 @@ app.get('/posts/:id', (req,res) => {
 // server connections
 let server;
 
-function runServer() {
-  const port = process.env.PORT || 8080;
+// run server
+function runServer(databaseURL, port = PORT) {
   return new Promise((resolve, reject) => {
+    mongoose.connect(databaseURL, err => {
+      if (err) {
+        return reject(err);
+      }
     server = app.listen(port, () => {
       console.log(`Your app is listening on port ${port}`);
-      resolve(server);
+      resolve();
     }).on('error', err => {
-      reject(err)
+      mongoose.disconnect();
+      reject(err);
     });
+  });
   });
 }
 
+// close server
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log('Closing server');
-    server.close(err => {
-      if (err) {
-        reject(err);
-        // so we don't also call `resolve()`
-        return;
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+           return reject(err);
+        // so we don't also call `resolve()
       }
       resolve();
     });
   });
+});
 }
-
+// if server.js is called directly, run this block
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+  runServer(DATABASE_URL).catch(err => console.error(err));
 };
 
 module.exports = {app, runServer, closeServer};
