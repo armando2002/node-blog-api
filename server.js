@@ -1,10 +1,12 @@
 const express = require('express');
+require('dotenv').config()
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 // grab database URL and Port from config.js
 const {DATABASE_URL, PORT} = require('./config');
+console.log(DATABASE_URL, PORT);
 
 // grab BlogPost model from models.js
 const {BlogPost} = require('./models');
@@ -74,7 +76,7 @@ app.post('/blog-posts', (req,res) => {
 app.delete('/blog-posts/:id', (req,res) => {
   BlogPost.findByIdAndRemove(req.params.id)
   .then(() => {
-    res.status(204).json({message: `deleted ${req.params.id}`});
+    res.json({message: `deleted ${req.params.id}`});
   })
   .catch(err => {
     res.status(500).json({ error: 'internal server error'});
