@@ -76,7 +76,7 @@ app.post('/blog-posts', (req,res) => {
 app.delete('/blog-posts/:id', (req,res) => {
   BlogPost.findByIdAndRemove(req.params.id)
   .then(() => {
-    res.json({message: `deleted ${req.params.id}`});
+    res.status(204).json({message: `deleted ${req.params.id}`});
   })
   .catch(err => {
     res.status(500).json({ error: 'internal server error'});
